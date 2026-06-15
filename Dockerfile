@@ -148,9 +148,9 @@ RUN if uname -m | grep "^x86"; then \
 fi
 
 # Disable nginx default sites
-RUN find /etc/nginx
-RUN rm /etc/nginx/sites-enabled/* \
-    /etc/nginx/sites-available/*
+#RUN find /etc/nginx
+#RUN rm /etc/nginx/sites-enabled/* \
+#    /etc/nginx/sites-available/*
 
 ENV PHP_CFG_PATH="/etc/php/${PHP_VERSION}"
 ENV PHP_ENV_FILE="/etc/php/environment" \
