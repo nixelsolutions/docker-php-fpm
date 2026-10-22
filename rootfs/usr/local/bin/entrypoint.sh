@@ -69,26 +69,11 @@ fi
 find /etc/nginx/ssl -type d -exec chmod 700 {} \;
 find /etc/nginx/ssl -type f -exec chmod 600 {} \;
 
-# Enable nginx modules
-for module in `find /etc/nginx/modules-available/ -type f -name "*.conf"`; do
-  if [ ! -e /etc/nginx/modules-enabled/`basename ${module}` ]; then
-    echo "=> Activating nginx module ${module} ... "
-    ln -s ${module} /etc/nginx/modules-enabled/
-  fi
-done
-
-# Enable nginx sites
-for site in `find /etc/nginx/sites-available/ -type f`; do
-  if [ ! -e /etc/nginx/sites-enabled/`basename ${site}` ]; then
-    echo "=> Activating nginx site ${site} ... "
-    ln -s ${site} /etc/nginx/sites-enabled/
-  fi
-done
-
 # Create the nginx cache path
 mkdir -p ${NGINX_CACHE_DIR}
 
 # Replace nginx config
+perl -p -i -e "s/^user .*;/user ${USER};/g" /etc/nginx/nginx.conf
 perl -p -i -e "s/worker_processes .*;/worker_processes ${NGINX_WORKER_PROCESSES};/g" /etc/nginx/nginx.conf
 perl -p -i -e "s/worker_connections .*;/worker_connections ${NGINX_WORKER_CONNECTIONS};/g" /etc/nginx/nginx.conf
 perl -p -i -e "s/keepalive_timeout .*;/keepalive_timeout ${NGINX_KEEPALIVE_TIMEOUT};/g" /etc/nginx/nginx.conf
