@@ -68,7 +68,7 @@ RUN LC_ALL=C.UTF-8 curl https://nginx.org/keys/nginx_signing.key | \
     echo "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n"| tee /etc/apt/preferences.d/99nginx && \
     apt-get update && apt-get -y install \
     nginx && \
-    #nginx-extras && \
+    rm -f /etc/nginx/conf.d/default.conf && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP packages
@@ -146,11 +146,6 @@ RUN if uname -m | grep "^x86"; then \
   rm -rf /var/lib/apt/lists/* && \
   phpdismod newrelic; \
 fi
-
-# Disable nginx default sites
-#RUN find /etc/nginx
-#RUN rm /etc/nginx/sites-enabled/* \
-#    /etc/nginx/sites-available/*
 
 ENV PHP_CFG_PATH="/etc/php/${PHP_VERSION}"
 ENV PHP_ENV_FILE="/etc/php/environment" \
